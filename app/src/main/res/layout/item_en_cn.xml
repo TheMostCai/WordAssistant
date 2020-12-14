@@ -10,17 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="left"
-        android:hint="hello"
-        android:textColor="@color/black"
-        android:textSize="18dp" />
-
-    <TextView
-        android:id="@+id/tv_soundmark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:hint="[həˈləʊ]"
+        android:hint="hello  [həˈləʊ]"
         android:textColor="@color/black"
         android:textSize="18dp" />
 
