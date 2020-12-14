@@ -20,17 +20,28 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="&lt;"
-            android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textColor="#4E6EF2"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="8"
+            android:layout_weight="20"
             android:gravity="center"
             android:hint="第n天"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="🛠"
             android:textColor="#000000"
             android:textSize="20dp" />
     </LinearLayout>
@@ -40,4 +51,41 @@
         android:layout_height="1dp"
         android:background="#000000" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/lv_words"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:gravity="center"
+                android:text="sort"
+                android:textColor="#4E6EF2"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:hint="完成第n组单词，请点击此处"
+                android:textColor="#4E6EF2"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
