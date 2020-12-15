@@ -21,15 +21,6 @@
             android:text="设置"
             android:textColor="@color/black"
             android:textSize="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="close"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
     </LinearLayout>
 
     <TextView
@@ -52,11 +43,6 @@
         android:text="查看熟词本"
         android:textColor="@color/black"
         android:textSize="20dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#AAAAAA" />
 
     <Button
         android:id="@+id/tv_changeWord"
