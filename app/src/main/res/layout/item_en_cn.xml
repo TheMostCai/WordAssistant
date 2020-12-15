@@ -3,12 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:hint="1"
+        android:textColor="@color/black"
+        android:textSize="18dp"/>
     <TextView
         android:id="@+id/tv_EN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:gravity="left"
         android:hint="hello  [həˈləʊ]"
         android:textColor="@color/black"
@@ -18,7 +25,7 @@
         android:id="@+id/tv_CN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:gravity="right"
         android:hint="你好"
         android:textColor="@color/black"

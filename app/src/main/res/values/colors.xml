@@ -4,4 +4,20 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="black">#000000</color>
+    <color name="incognizant_number_0">#00f0131c</color>
+    <color name="incognizant_number_1">#11f0131c</color>
+    <color name="incognizant_number_2">#22f0131c</color>
+    <color name="incognizant_number_3">#33f0131c</color>
+    <color name="incognizant_number_4">#44f0131c</color>
+    <color name="incognizant_number_5">#55f0131c</color>
+    <color name="incognizant_number_6">#66f0131c</color>
+    <color name="incognizant_number_7">#77f0131c</color>
+    <color name="incognizant_number_8">#88f0131c</color>
+    <color name="incognizant_number_9">#99f0131c</color>
+    <color name="incognizant_number_10">#AAf0131c</color>
+    <color name="incognizant_number_11">#BBf0131c</color>
+    <color name="incognizant_number_12">#CCf0131c</color>
+    <color name="incognizant_number_13">#DDf0131c</color>
+    <color name="incognizant_number_14">#EEf0131c</color>
+    <color name="incognizant_number_15">#FFf0131c</color>
 </resources>
