@@ -11,7 +11,6 @@ import androidx.annotation.ArrayRes;
 import org.school.wordassistant.entity.Word;
 import org.school.wordassistant.util.DataBaseHelper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,16 +28,23 @@ public class DBWordDao {
     //得到对应的数据类型对应的总的单词个数
     public static int TOTAL_WORD_NUMBER = 0;
 
+    //创建的SQLiteDataBase数据库对象
+    private static SQLiteDatabase sqLiteDatabase;
+    private static DataBaseHelper dataBaseHelper;
+
 
     //含参数的构造函数
     public DBWordDao(Context mycontext){
-        dataBaseHelper =new DataBaseHelper(mycontext);
-        sqLiteDatabase = dataBaseHelper.openDatabase();
+        if(dataBaseHelper == null){
+            dataBaseHelper =new DataBaseHelper(mycontext);
+        }
+
+        if(sqLiteDatabase == null){
+            sqLiteDatabase = dataBaseHelper.openDatabase();
+        }
     }
 
-    //创建的SQLiteDataBase数据库对象
-    private static SQLiteDatabase sqLiteDatabase;
-    private DataBaseHelper dataBaseHelper;
+
 
     //得到对应的生词本数据（得到对应词库类型的所有单词）
     public static void loadWords(String type){
@@ -52,17 +58,21 @@ public class DBWordDao {
             e.printStackTrace();
         }
 
-        //向list数组中增加word
-        while(cursor.moveToNext()){
-            Word word=new Word();
-            word.setId(cursor.getInt(cursor.getColumnIndex("id")));
-            word.setWordString(cursor.getString(cursor.getColumnIndex("word")));
-            word.setPhoneticSymbol(cursor.getString(cursor.getColumnIndex("phonetic")));
-            word.setDescription(cursor.getString(cursor.getColumnIndex("translation")));
-            allWords.add(word);
+        //判断allwords是不是空的
+        if(allWords.isEmpty()){
+            //向list数组中增加word
+            while(cursor.moveToNext()){
+                Word word=new Word();
+                word.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                word.setWordString(cursor.getString(cursor.getColumnIndex("word")));
+                word.setPhoneticSymbol(cursor.getString(cursor.getColumnIndex("phonetic")));
+                word.setDescription(cursor.getString(cursor.getColumnIndex("translation")));
+                allWords.add(word);
+            }
         }
 
         Log.i("DbWordDao ---->","loadWords --->"+allWords.size()+"");
+
         TOTAL_WORD_NUMBER = allWords.size();  //得到单词个数
     }
 

@@ -14,8 +14,7 @@ import org.school.wordassistant.R;
 import org.school.wordassistant.adapter.SideSlipAdapter;
 import org.school.wordassistant.entity.Word;
 import org.school.wordassistant.service.DBWordDao;
-import org.school.wordassistant.util.DataBaseHelper;
-import org.school.wordassistant.util.ListKeeper;
+import org.school.wordassistant.util.StaticVariablesKeeper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //创建一个db对象
-        DBWordDao dbWordDao = new DBWordDao(this);
+        if(StaticVariablesKeeper.dbWordDao == null) {
+            StaticVariablesKeeper.dbWordDao = new DBWordDao(this);
+        }
 
         //初始化组件
         initialize();
@@ -80,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
         //数据库对象初始化（第一次获得数据库）
         try {
             //加载对应类型的单词数据
-            DBWordDao.loadWords(getType);  //首次加载应用缓冲数据
+            StaticVariablesKeeper.dbWordDao.loadWords(getType);  //首次加载应用缓冲数据
 
             //得到当天数据
-            eachDayListMA = DBWordDao.getEachDayWordsList(displayNumberSinglePage,currentDay);
+            eachDayListMA = StaticVariablesKeeper.dbWordDao.getEachDayWordsList(displayNumberSinglePage,currentDay);
 
         }catch (Exception e){
             e.printStackTrace();  //打印对应的报错信息
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void delete(int pos) {
                 eachDayListMA.remove(pos);  //直接移除数据
-                ListKeeper.keepChangedList.add(eachDayListMA.get(pos));  //保存更改状态单词
+                StaticVariablesKeeper.keepChangedList.add(eachDayListMA.get(pos));  //保存更改状态单词
                 //更新
                 adapter.notifyDataSetChanged();  //通知adapter更新界面
             }

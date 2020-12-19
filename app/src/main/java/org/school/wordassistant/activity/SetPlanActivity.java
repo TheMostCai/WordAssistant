@@ -14,7 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.school.wordassistant.R;
-import org.school.wordassistant.util.DataBaseHelper;
+import org.school.wordassistant.service.DBWordDao;
+import org.school.wordassistant.util.StaticVariablesKeeper;
 
 public class SetPlanActivity extends AppCompatActivity {
 
@@ -25,9 +26,10 @@ public class SetPlanActivity extends AppCompatActivity {
     //定义数字选择器
     private NumberPicker numberPicker;
     //定义的显示用户选择的单词数量的TextView
-    private TextView wordsDisplayOneDay;
+    private TextView tv_wordsDisplayOneDay;
+
     //定义的预计完成天数变量
-    private TextView finishDays;
+    private TextView tv_finishDays;
 
     //定义的开始背单词按钮
     private Button btn_set_plane;
@@ -35,7 +37,7 @@ public class SetPlanActivity extends AppCompatActivity {
     //定义的整数类型需要完成的天数
     private int finishDaysNumber;
 
-    //得到当前activity中总的天数
+    //得到当前activity中总的单词数
     private int currentToTalWords;
 
 
@@ -50,6 +52,11 @@ public class SetPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_plan);
+
+        //创建一个db对象
+        if(StaticVariablesKeeper.dbWordDao == null) {
+            StaticVariablesKeeper.dbWordDao = new DBWordDao(this);
+        }
 
         //得到总的天数
 //        currentToTalWords = DataBaseHelper.TOTAL_WORD_NUMBER;
@@ -69,8 +76,8 @@ public class SetPlanActivity extends AppCompatActivity {
 
         //获得布局文件中的组件
         numberPicker = (NumberPicker)findViewById(R.id.np_word_number);
-        wordsDisplayOneDay = (TextView) findViewById(R.id.displayNumber);
-        finishDays =  (TextView) findViewById(R.id.finishDays);
+        tv_wordsDisplayOneDay = (TextView) findViewById(R.id.displayNumber);
+        tv_finishDays =  (TextView) findViewById(R.id.finishDays);
         btn_set_plane  = (Button) findViewById(R.id.btn_set_plane);
         spinner = (Spinner) findViewById(R.id.wordType);
 
@@ -82,9 +89,6 @@ public class SetPlanActivity extends AppCompatActivity {
         //设置当前值
         numberPicker.setValue(20);
 
-        //初始化的时候得到的按照默认值需要完成的天数
-        finishDaysNumber = currentToTalWords % wordsDisplayDay == 0
-                ? currentToTalWords /  wordsDisplayDay : currentToTalWords / wordsDisplayDay + 1;
 
     }
 
@@ -92,15 +96,39 @@ public class SetPlanActivity extends AppCompatActivity {
     //设置监听器的方法
     private void setLisenter(){
 
+        //spinner设置监听器实现对于用户选择词库类型之后得到单词总数
+        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {//选择item的选择点击监听事件
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                // 将所选mySpinner 的值带入myTextView 中
+                System.out.println("arg2-------->" + arg2);
+
+                if(arg2 != 0){
+                    StaticVariablesKeeper.dbWordDao.loadWords(getType(arg2));
+                    currentToTalWords = StaticVariablesKeeper.dbWordDao.TOTAL_WORD_NUMBER;
+                }
+
+//                Log.i("SetplanActivity ----> ",currentToTalWords+"");
+                System.out.println("SetplanActivity ----> "+currentToTalWords);
+
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
         //设置滑动监听，获得对应的天数和当前天数的值
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int oldvalue, int newvalue){
                 Log.i("get i and  i1   ----> ",oldvalue + " " + newvalue);
-                wordsDisplayOneDay.setText(newvalue+"个");  //设置最新选择的单词量
+                tv_wordsDisplayOneDay.setText(newvalue+"个");  //设置最新选择的单词量
                 //计算需要完成的天数
                 finishDaysNumber = currentToTalWords % newvalue == 0 ? currentToTalWords /  newvalue : currentToTalWords / newvalue + 1;
-                finishDays.setText(finishDaysNumber+"天");
+                tv_finishDays.setText(finishDaysNumber+"天");
                 wordsDisplayDay = newvalue;  //设置用于传递的每页显示的单词个数的变量
             }
         });
@@ -115,11 +143,11 @@ public class SetPlanActivity extends AppCompatActivity {
                 //使用Bundle传值
                 Bundle bundle = new Bundle();
                 //得到spinner的值
-                String getSpinnerString = spinner.getSelectedItem().toString();
-                if(getSpinnerString.equals("单词类型")){  //表示用户没有选择背单词类型，那么不让用户点击
+                int getSpinnerPosition = spinner.getSelectedItemPosition();
+                if(getSpinnerPosition == 0){  //表示用户没有选择背单词类型，那么不让用户点击
                     Toast.makeText(SetPlanActivity.this,"请选择词库类型！",Toast.LENGTH_SHORT).show();
                 }else {
-                    bundle.putString("wordType",getType(getSpinnerString));
+                    bundle.putString("wordType",getType(getSpinnerPosition));
                     bundle.putInt("single_display_number", wordsDisplayDay);
                     bundle.putInt("total_days", finishDaysNumber);
                     toMainActivity.putExtras(bundle);  //放到intent中
@@ -132,19 +160,20 @@ public class SetPlanActivity extends AppCompatActivity {
 
 
     //设置的根据spinner选择的类型得到对应的代号
-    private String getType(String type){
+    private String getType(int index){
+
         String style = "";
-        if(type.equals("高中(gk)")){
+        if(index == 1){
             style = "gk";
-        }else if(type.equals("大学英语四级(CET4)")){
+        }else if(index == 2){
             style = "cet4";
-        }else if(type.equals("大学英语六级(CET6)")){
+        }else if(index == 3){
             style = "cet6";
-        }else if(type.equals("雅思(IELTS)")){
+        }else if(index == 4){
             style = "ielts";
-        }else if(type.equals("托福(TOEFL)")){
+        }else if(index == 5){
             style = "toefl";
-        }else if(type.equals("GRE")){
+        }else if(index == 6){
             style = "gre";
         }
         return style;
