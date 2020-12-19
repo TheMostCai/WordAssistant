@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SetPlanActivity">
+    tools:context=".activity.SetPlanActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -44,7 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
-            android:hint="50个"
+            android:hint="30个"
+            android:id="@+id/displayNumber"
             android:textColor="@color/black"
             android:textSize="25dp" />
     </LinearLayout>
@@ -74,6 +75,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:hint="110天"
+            android:id="@+id/finishDays"
             android:textColor="@color/black"
             android:textSize="25dp" />
     </LinearLayout>

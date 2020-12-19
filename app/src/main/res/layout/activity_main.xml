@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,6 +55,7 @@
             android:text="🛠"
             android:textColor="#000000"
             android:textSize="20dp" />
+
     </LinearLayout>
 
     <TextView
@@ -62,6 +63,8 @@
         android:layout_height="1dp"
         android:background="#000000" />
 
+
+    <!--实现对于单词数据的渲染-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
