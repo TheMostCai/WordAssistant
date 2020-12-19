@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    app:swipeEnable="true"
+    app:leftSwipe="true"
+    app:ios="true">
+
+    <!-- itemView的内容，这里我简单的使用了一个textview。
+    如果是更加复杂的布局，大家可以在外面包裹一个父布局，如LineatLayout，
+    然后在这个父布局里面设置你想要展示的复杂内容。listview的每一个item展示的
+    内容就是这个布局确定的，必须要有。-->
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="displayWords"/>
+
+    <!-- 侧滑菜单选项，这里可以有多个选项。这里就用了置顶和删除两个选项-->
+    <Button
+        android:id="@+id/btnTop"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        android:text="收藏"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="60dp"
+        android:background="@android:color/holo_red_dark"
+        android:layout_height="match_parent"
+        android:text="删除"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btnAddColor"
+        android:layout_width="60dp"
+        android:background="@android:color/darker_gray"
+        android:layout_height="match_parent"
+        android:text="加深标记"
+        android:textColor="@android:color/white"/>
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

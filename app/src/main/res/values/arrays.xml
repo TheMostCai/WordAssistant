@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="languages">
+        <item>单词类型</item>
+        <item>高中(gk)</item>
+        <item>大学英语四级(CET4)</item>
+        <item>大学英语六级(CET6)</item>
+        <item>雅思(IELTS)</item>
+        <item>托福(TOEFL)</item>
+        <item>GRE</item>
+    </string-array>
+</resources>

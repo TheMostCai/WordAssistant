@@ -9,8 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.NewWordsRecord"></activity>
-        <activity android:name=".activity.SetPlanActivity" >
+        <activity android:name=".test.TestActivity">
+
+        </activity>
+        <activity android:name=".activity.FamiliarWordsActivity" />
+        <activity android:name=".activity.NewWordsRecordActivity" />
+        <activity android:name=".activity.SetPlanActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,10 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.WordChangeActivity" />
-        <activity android:name=".activity.Setting" />
-        <activity android:name=".activity.MainActivity">
-
-        </activity>
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

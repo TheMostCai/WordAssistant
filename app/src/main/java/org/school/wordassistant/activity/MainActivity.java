@@ -6,11 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.school.wordassistant.R;
-import org.school.wordassistant.operation.DataBaseHelper;
+import org.school.wordassistant.adapter.SideSlipAdapter;
+import org.school.wordassistant.entity.Word;
+import org.school.wordassistant.service.DBWordDao;
+import org.school.wordassistant.util.DataBaseHelper;
+import org.school.wordassistant.util.ListKeeper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
     //定义的是总共显示的天数
     private int totalDays = 0;
 
+    //定义的是ListView组件变量
+    private ListView lv_words;
+    //定义每一天显示的存储数据数组
+    private List<Word> eachDayListMA = new ArrayList<>();
+    //定义一个适配器
+    private SideSlipAdapter adapter;
+
+    //定义词库类型
+    private String getType = "";
 
 
     @Override
@@ -38,45 +55,98 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //创建一个db对象
+        DBWordDao dbWordDao = new DBWordDao(this);
+
+        //初始化组件
+        initialize();
+
         //得到的传过来的每一页显示的个数
         Bundle bundle = getIntent().getExtras();
+
         try {
             displayNumberSinglePage = bundle.getInt("single_display_number");
             totalDays = bundle.getInt("total_days");
-            Toast.makeText(MainActivity.this,"设置每天单词数量是：" + displayNumberSinglePage +
-                    "    总天数是：" + totalDays,Toast.LENGTH_SHORT).show();
+            getType = bundle.getString("wordType");
+
+          Log.i("MainAcitivity ------>  ","onCreate --->  设置每天单词数量是：" + displayNumberSinglePage +
+                    "    总天数是：" + totalDays+"   得到的词库类型：  " + getType);
+
         }catch (Exception e){
             e.printStackTrace();
         }  //用于设置每个页面显示单词数(实现分页查询)
 
 
-
         //数据库对象初始化（第一次获得数据库）
         try {
-            //加载单词数据
-            DataBaseHelper.loadWords();
+            //加载对应类型的单词数据
+            DBWordDao.loadWords(getType);  //首次加载应用缓冲数据
+
+            //得到当天数据
+            eachDayListMA = DBWordDao.getEachDayWordsList(displayNumberSinglePage,currentDay);
 
         }catch (Exception e){
             e.printStackTrace();  //打印对应的报错信息
         }
 
 
-        //获得对应的组件
+
+        //适配器对象的初始化
+        adapter =  new SideSlipAdapter(this,eachDayListMA);
+
+        // 注册监听器,回调用来刷新数据显示(不同的方法实现不同的数据操作,并且实现了对于不同的类实现不同方法的操作)
+        adapter.setDelItemListener(new SideSlipAdapter.DeleteItem() {
+            @Override
+            public void delete(int pos) {
+                eachDayListMA.remove(pos);  //直接移除数据
+                ListKeeper.keepChangedList.add(eachDayListMA.get(pos));  //保存更改状态单词
+                //更新
+                adapter.notifyDataSetChanged();  //通知adapter更新界面
+            }
+
+            @Override
+            public void collect(int pos) {
+                // to-do
+
+            }
+
+            @Override
+            public void addColor(int pos) {
+                //to-do
+
+            }
+        });
+
+        //给listView设置相应的适配器
+        lv_words.setAdapter(adapter);
+
+        //设置监听器
+        setListener();
+
+    }
+
+    //初始化组件方法
+    public void initialize(){
+
+        //初始化组件
         tv_setting = (TextView) findViewById(R.id.tv_setting);
         tv_back = (TextView) findViewById(R.id.tv_back);
         tv_days = (TextView) findViewById(R.id.tv_days);
         tv_front = (TextView) findViewById(R.id.tv_front);
-
+        lv_words = (ListView) findViewById(R.id.lv_words);
 
         //设置当前显示的天数
         tv_days.setText("第" + currentDay + "天");
+    }
 
+    //集合很多的设置监听器的方法
+    private void setListener(){
 
         //点击的时候实现跳转
         tv_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toSetting = new Intent(MainActivity.this,Setting.class);
+                Intent toSetting = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(toSetting);
                 Log.i("MainActivity    ----> ","onCreate() intent to ------>"+toSetting);
             }
@@ -122,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
 
 

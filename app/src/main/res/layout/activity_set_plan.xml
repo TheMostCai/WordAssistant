@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activity.SetPlanActivity">
 
@@ -13,6 +14,15 @@
         android:text="设置计划"
         android:textColor="@color/black"
         android:textSize="20dp" />
+
+    <Spinner
+        android:id="@+id/wordType"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAlignment="center"
+        android:background="@drawable/spinner"
+        android:entries="@array/languages"
+        />
 
     <NumberPicker
         android:id="@+id/np_word_number"
