@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_dict1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EFF5F8"
+        android:text="柯斯林字典"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/explain1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F2F2F2"
+        android:hint="@string/hint" />
+
+    <TextView
+        android:id="@+id/dict2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EFF5F8"
+        android:text="柯斯林字典"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/explain2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F2F2F2"
+        android:hint="@string/hint" />
+</LinearLayout>
