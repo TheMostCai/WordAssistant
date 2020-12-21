@@ -51,7 +51,7 @@ public class SettingActivity extends AppCompatActivity {
     //设置的监听器初始化方法
     public void setListener(){
 
-        //点击更改生词本的时候跳转
+        //点击更改计划时候跳转
         tv_changeWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +66,6 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent  = new Intent(SettingActivity.this,NewWordsRecordActivity.class);
-
                 //结束当前界面
 //                finish();
                 startActivity(intent);

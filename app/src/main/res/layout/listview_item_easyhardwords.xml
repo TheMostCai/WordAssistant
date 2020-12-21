@@ -19,8 +19,9 @@
         android:orientation="horizontal"
         android:textAlignment="center"
         >
+        <!--设置的显示单词序号的tv-->
         <TextView
-            android:id="@+id/tv_number"
+            android:id="@+id/eh_tv_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="5"
@@ -28,8 +29,10 @@
             android:layout_marginRight="10dp"
             android:textColor="@color/black"
             android:textSize="18dp"/>
+
+        <!--设置的显示单词英文的tv-->
         <TextView
-            android:id="@+id/tv_EN"
+            android:id="@+id/eh_tv_EN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="6"
@@ -38,8 +41,9 @@
             android:textColor="@color/black"
             android:textSize="18dp" />
 
+        <!--设置的显示单词中文的tv-->
         <TextView
-            android:id="@+id/tv_CN"
+            android:id="@+id/eh_tv_CN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
@@ -49,9 +53,10 @@
 
     </LinearLayout>
 
-    <!-- 侧滑菜单选项，这里可以有多个选项。这里就用了置顶和删除两个选项-->
+
+    <!-- 侧滑菜单选项，这里可以有多个选项。这里就用了删除一个选项-->
     <Button
-        android:id="@+id/btnTop"
+        android:id="@+id/eh_btnDelete"
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"

@@ -14,16 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.school.wordassistant.R;
-import org.school.wordassistant.adapter.SideSlipAdapter;
+import org.school.wordassistant.adapter.MainSideSlipAdapter;
 import org.school.wordassistant.entity.Word;
 import org.school.wordassistant.service.DBWordDao;
 import org.school.wordassistant.util.StaticVariablesKeeper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     //定义每一天显示的存储数据数组
     private List<Word> eachDayListMA = new ArrayList<>();
     //定义一个适配器
-    private SideSlipAdapter adapter;
+    private MainSideSlipAdapter adapter;
 
     //定义词库类型
     private String getType = "";
@@ -107,63 +105,88 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //适配器对象的初始化
-        adapter =  new SideSlipAdapter(this,eachDayListMA);
+        adapter =  new MainSideSlipAdapter(this,eachDayListMA);
 
         // 注册监听器,回调用来刷新数据显示(不同的方法实现不同的数据操作,并且实现了对于不同的类实现不同方法的操作)
-        adapter.setDelItemListener(new SideSlipAdapter.DeleteItem() {
+        adapter.setDelItemListener(new MainSideSlipAdapter.DeleteItem() {
+
+            //右滑点击删除时实现的逻辑
             @Override
             public void delete(int pos) {
-                eachDayListMA.remove(pos);  //直接移除数据
 
-                //直接更新allWords集合实现当次进入app的总体的数据的更新
-                //根据当前天数以及每页单词个数得到的在allWords集合中的Index
-                int getIndexAllWords = 0;
-                getIndexAllWords = (currentDay-1) * displayNumberSinglePage + pos;
-                //得到当前allWords中对应下标的原来的words
-                Word word = StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords);
+                Log.i("MA delete pos is -->",pos+"");
 
-                //更新对应的word的数据
-                word.setIsDelCollect(2);  //表示设置为删除状态
+                //更改对应元素设置为null
+                Word getWord = eachDayListMA.get(pos);//更改元素对应的数据
 
-                StaticVariablesKeeper.dbWordDao.allWords.set(getIndexAllWords,word);
+                //先根据map集合检索是不是已经存在了（这里使用的是单词的id，具有唯一性）
+                if(StaticVariablesKeeper.keepEasyWordMap.containsKey(getWord.getId())){
+                    Toast.makeText(MainActivity.this,"该单词已经在生词本中！",Toast.LENGTH_SHORT).show();
+                }else {
+                    //不在生词本中实现以后操作
+                    getWord.setIsDelCollect(2);
+                    eachDayListMA.set(pos,getWord);  //表示设置删除标记之后更新数组
 
-                Log.i("get alWords is -->",StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords).getIsDelCollect()+"");
+                    //直接更新allWords集合实现当次进入app的总体的数据的更新
+                    int getIndexAllWords = 0;
+                    //根据当前天数以及每页单词个数得到的在allWords集合中的index
+                    getIndexAllWords = (currentDay-1) * displayNumberSinglePage + pos;
 
-                Log.i("beforedel size is ->",StaticVariablesKeeper.keepHardWordList.size()+"");
+                    StaticVariablesKeeper.dbWordDao.allWords.set(getIndexAllWords,getWord);
 
-                //保存更改状态单词，用于实现最后退出app的时候，更新数据库
-                List<Object> innerList = new ArrayList<>();
-                innerList.add(getIndexAllWords,word);
-                StaticVariablesKeeper.keepHardWordList.add(innerList);
+                    //保存更改状态单词，用于实现最后退出app的时候，更新数据库（每一次都重新创建）
+                    List<Object> innerList = new ArrayList<>();
+                    innerList.add(getIndexAllWords);
+                    innerList.add(getWord);
+                    //向静态list集合中添加用户删除的元素
+                    StaticVariablesKeeper.keepEasyWordList.add(innerList);
 
-                Log.i("afterdel size is ->",StaticVariablesKeeper.keepHardWordList.size()+"");
+                    //向map集合中添加用户删除的元素
+                    StaticVariablesKeeper.keepEasyWordMap.put(getWord.getId(),getWord);
 
-                //通知adapter更新界面
-                adapter.notifyDataSetChanged();
+
+                    Log.i("MA KEWL size->",StaticVariablesKeeper.keepEasyWordList.size()+"");
+
+                    //通知adapter更新界面
+                    adapter.notifyDataSetChanged();
+                }
             }
 
+
+            //实现的收藏方法
             @Override
             public void collect(int pos) {
 
+                Log.i("MA collect pos is -->",pos+"");
+
                 //直接更新allWords集合实现当次进入app的总体的数据的更新
                 //根据当前天数以及每页单词个数得到的在allWords集合中的Index
                 int getIndexAllWords = 0;
                 getIndexAllWords = (currentDay-1) * displayNumberSinglePage + pos;
                 //得到当前allWords中对应下标的原来的words
                 Word word = StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords);
-                //更新对应的word的数据
-                word.setIsDelCollect(1);  //表示设置为收藏状态
-                StaticVariablesKeeper.dbWordDao.allWords.set(getIndexAllWords,word);
 
-                Log.i("beforecollec size is ->",StaticVariablesKeeper.keepEasyWordList.size()+"");
+                if(StaticVariablesKeeper.keepHardWordList.contains(word.getId())){  //表示包含对应的单词
+                    Toast.makeText(MainActivity.this,"对不起，该单词已经在熟词本中！",Toast.LENGTH_SHORT).show();
+                }else {
+                    //否则更新收藏元素
+                    //更新对应的word的数据
+                    word.setIsDelCollect(1);  //表示设置为收藏状态
+                    StaticVariablesKeeper.dbWordDao.allWords.set(getIndexAllWords,word);
 
-                //保存更改状态单词，用于实现最后退出app的时候，更新数据库
-                List<Object> innerList = new ArrayList<>();
-                innerList.add(getIndexAllWords,word);
-                StaticVariablesKeeper.keepHardWordList.add(innerList);
+                    Log.i("beforecollec size is ->",StaticVariablesKeeper.keepEasyWordList.size()+"");
 
-                Log.i("aftercollec size is ->",StaticVariablesKeeper.keepEasyWordList.size()+"");
+                    //保存更改状态单词，用于实现最后退出app的时候，更新数据库
+                    List<Object> innerList = new ArrayList<>();
+                    innerList.add(getIndexAllWords);
+                    innerList.add(word);
+                    //向list集合中添加元素实现界面的渲染
+                    StaticVariablesKeeper.keepHardWordList.add(innerList);
+                    //向map集合中存放用来判断对应的数据是否已经存在
+                    StaticVariablesKeeper.keepHardWordMap.put(word.getId(),word);
 
+                    Log.i("MA KHWL size is ->",StaticVariablesKeeper.keepHardWordList.size()+"");
+                }
             }
 
             @Override
@@ -171,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 //to-do
 
             }
+
         });
 
         //给listView设置相应的适配器

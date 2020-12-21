@@ -72,7 +72,7 @@ public class DBWordDao {
             e.printStackTrace();
         }
 
-        //判断allwords是不是空的
+        //判断allwords是不是空的，不是空的则清空allWords
         if(!allWords.isEmpty()){
             allWords.clear();
         }
@@ -87,14 +87,15 @@ public class DBWordDao {
             allWords.add(word);
         }
 
-        Log.i("DbWordDao ---->","loadWords --->"+allWords.size()+"");
+        Log.i("DbWordDao allWords size is ---->",allWords.size()+"");
 
-        TOTAL_WORD_NUMBER = allWords.size();  //得到单词个数
+        //得到对应选择类型的单词总数
+        TOTAL_WORD_NUMBER = allWords.size();
     }
 
 
-    //得到每一天单词的方法
     /**
+     * 得到每一天单词的方法
      * @param seachNum  查阅几个单词
      * @param day 第几天（当前天数）
      * **/
@@ -107,10 +108,10 @@ public class DBWordDao {
         //由allWords得到对应的数据
         eachDayWordsList = allWords.subList(fromNum,fromNum + seachNum);  //得到对应的截取数组
 
-        Log.i("DBWordDao size1 is -->",eachDayWordsList.size()+"");
-        Log.i("allWords1 is -->",DBWordDao.allWords.size()+"");
-
+        //初始化一个对应的返回数据数组
         returnListEvtime = new ArrayList<>();
+
+        Log.i("DBWD eachDayWordList size -> ",eachDayWordsList.size()+"");
 
         //使用Iterator实现数组的新建（原因是使用sublist得到的子数组对应的地址没有变化，也就是说更改eachDayWordsList还是会更改到对应的allWords数组）
         Iterator iterator = eachDayWordsList.iterator();
@@ -120,21 +121,11 @@ public class DBWordDao {
             if (word.getIsDelCollect()!=2){
                 returnListEvtime.add(word);
             }else {
-                Log.i("get word isdelCollect --> ",word.getIsDelCollect()+"");
+                Log.i("get word isDelCollect --> ",word.getIsDelCollect()+"");
             }
-
         }
 
-//        iterator = returnListEvtime.iterator();
-//        while(iterator.hasNext()){ //表示iterator对象迭代遍历
-//            Word word = (Word) iterator.next();
-//            if(word.getIsDelCollect() == 2){
-//                iterator.remove();
-//            }
-//        }
-
-        Log.i("DBWordDao size2 is -->",eachDayWordsList.size()+"");
-        Log.i("allWords2 is -->",DBWordDao.allWords.size()+"");
+        Log.i("DBWD returnArray size -> ",returnListEvtime.size()+"");
 
         return returnListEvtime;
     }

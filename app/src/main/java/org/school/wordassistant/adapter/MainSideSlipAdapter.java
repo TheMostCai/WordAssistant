@@ -16,13 +16,13 @@ import org.school.wordassistant.entity.Word;
 
 import java.util.List;
 
-public class SideSlipAdapter extends BaseAdapter{
+public class MainSideSlipAdapter extends BaseAdapter{
 
     private LayoutInflater inflater;
     private List<Word> list;
     private Context context;
 
-    public SideSlipAdapter(Context context, List<Word> list) {
+    public MainSideSlipAdapter(Context context, List<Word> list) {
         this.inflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
@@ -84,18 +84,53 @@ public class SideSlipAdapter extends BaseAdapter{
         //得到的是对应的原来的holder对象
         holder = (ViewHolder) convertView.getTag();
 
-        //向listview组件item中对应设置数据
-        holder.content.setText(list.get(position).getWordString());
+        //判断是否是已经删除的元素，如果是那么就不渲染
+        if(list.get(position).getIsDelCollect() == 0) {  //表示正常显示
+            //向listview组件item中对应设置数据
+            holder.content.setText(list.get(position).getWordString());
 
-        //向listView中的tv_CN组件设置对应的中文解释
-        holder.tv_CN.setText(list.get(position).getDescription());
+            //向listView中的tv_CN组件设置对应的中文解释
+            holder.tv_CN.setText(list.get(position).getDescription());
 
-        //向listView中的组件tv_number设置对应的单词序号
-        holder.tv_number.setText((position+1)+"");
+            //向listView中的组件tv_number设置对应的单词序号
+            holder.tv_number.setText((position + 1) + "");
+
+        }else if(list.get(position).getIsDelCollect() == 2){  //表示已经被删除
+
+            //向listview组件item中对应设置数据
+            holder.content.setText(list.get(position).getWordString());
+            holder.content.setEnabled(false);
+
+            //向listView中的tv_CN组件设置对应的中文解释
+            holder.tv_CN.setText("");
+            holder.tv_CN.setHint("已删除");
+            holder.tv_CN.setEnabled(false);
+
+            //向listView中的组件tv_number设置对应的单词序号
+            holder.tv_number.setText((position + 1) + "");
+            holder.tv_number.setEnabled(false);
+
+        }else{
+            //向listview组件item中对应设置数据
+            holder.content.setText("");
+            holder.content.setHint("已收藏");
+            holder.content.setEnabled(false);
+
+            //向listView中的tv_CN组件设置对应的中文解释
+            holder.tv_CN.setText("");
+            holder.tv_CN.setHint("已收藏");
+            holder.tv_CN.setEnabled(false);
+
+            //向listView中的组件tv_number设置对应的单词序号
+            holder.tv_number.setText((position + 1) + "");
+            holder.tv_number.setEnabled(false);
+        }
+
 
         /**
          * 收藏按钮的单击事件
          * **/
+
         holder.btn_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +155,7 @@ public class SideSlipAdapter extends BaseAdapter{
                 if (delItemListener != null){  //显示判断监听器接口是不是空的,如果不是的直接调用接口中的删除方法
                     delItemListener.delete(position); // 调用接口的方法，回调删除该项数据(是按照list中的index下标删除数据)
                 }
+
                 ((SwipeMenuLayout)(finalCloseView)).quickClose();// 关闭侧滑菜单
 
             }
