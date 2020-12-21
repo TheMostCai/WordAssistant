@@ -47,11 +47,11 @@ public class SetPlanActivity extends AppCompatActivity {
     private String chooseType;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_plan);
+
 
         //创建一个db对象
         if(StaticVariablesKeeper.dbWordDao == null) {
@@ -68,7 +68,6 @@ public class SetPlanActivity extends AppCompatActivity {
         setLisenter();
 
     }
-
 
 
     //对象初始化方法
@@ -88,14 +87,10 @@ public class SetPlanActivity extends AppCompatActivity {
         numberPicker.setMinValue(20);
         //设置当前值
         numberPicker.setValue(20);
-
-
     }
-
 
     //设置监听器的方法
     private void setLisenter(){
-
         //spinner设置监听器实现对于用户选择词库类型之后得到单词总数
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {//选择item的选择点击监听事件
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -134,7 +129,6 @@ public class SetPlanActivity extends AppCompatActivity {
         });
 
 
-
         //设置的显示对应的点击开始背单词按钮之后跳转逻辑
         btn_set_plane.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +145,10 @@ public class SetPlanActivity extends AppCompatActivity {
                     bundle.putInt("single_display_number", wordsDisplayDay);
                     bundle.putInt("total_days", finishDaysNumber);
                     toMainActivity.putExtras(bundle);  //放到intent中
+
+                    //初始化对应的背诵到的当前天数
+                    StaticVariablesKeeper.flagHasRecitedDay = 1;  //设置为0表示还没有完成第1天的任务、
+                    //启动对应的页面
                     startActivity(toMainActivity);
                 }
             }

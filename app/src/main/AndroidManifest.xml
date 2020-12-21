@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".test.TestActivity">
-
+        <activity android:name=".activity.EntryActivity">
         </activity>
+        <activity android:name=".test.TestActivity"></activity>
         <activity android:name=".activity.FamiliarWordsActivity" />
         <activity android:name=".activity.NewWordsRecordActivity" />
         <activity android:name=".activity.SetPlanActivity">

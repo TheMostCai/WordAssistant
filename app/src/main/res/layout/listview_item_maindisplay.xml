@@ -15,24 +15,26 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textAlignment="center"
+        >
         <TextView
             android:id="@+id/tv_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="left"
-            android:hint="1"
+            android:layout_weight="5"
+            android:text="1"
+            android:layout_marginRight="10dp"
             android:textColor="@color/black"
             android:textSize="18dp"/>
         <TextView
             android:id="@+id/tv_EN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:gravity="left"
-            android:hint="hello  [həˈləʊ]"
+            android:layout_weight="6"
+            android:text="hello"
+            android:layout_marginRight="10dp"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -40,9 +42,8 @@
             android:id="@+id/tv_CN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:gravity="right"
-            android:hint="你好"
+            android:layout_weight="20"
+            android:text="你好"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -62,7 +63,7 @@
         android:layout_width="60dp"
         android:background="@android:color/holo_red_dark"
         android:layout_height="match_parent"
-        android:text="删除"
+        android:text="熟词"
         android:textColor="@android:color/white"/>
 
     <Button

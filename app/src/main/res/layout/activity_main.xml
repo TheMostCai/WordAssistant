@@ -92,14 +92,14 @@
                 android:textColor="#4E6EF2"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/tv_over"
+            <Button
+                android:id="@+id/bu_over"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:hint="完成第n组单词，请点击此处"
+                android:text="已完成当天单词请点击此处"
                 android:textColor="#4E6EF2"
                 android:textSize="20dp" />
         </LinearLayout>

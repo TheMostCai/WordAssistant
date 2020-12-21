@@ -14,9 +14,22 @@ public class Word {
     private String phoneticSymbol;
     //设置的是否被收藏or删除
     private int isDelCollect;
+    //设置的显示例句变量
+    private String exampleCentence;
+
 
 
     //生成的对应的set和get方法
+
+
+    public String getExampleCentence() {
+        return exampleCentence;
+    }
+
+    public void setExampleCentence(String exampleCentence) {
+        this.exampleCentence = exampleCentence;
+    }
+
     public int getId() {
         return id;
     }

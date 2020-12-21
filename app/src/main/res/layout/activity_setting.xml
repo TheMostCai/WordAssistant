@@ -32,7 +32,7 @@
         android:id="@+id/btn_hardWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="查看单词本"
+        android:text="查看需牢记"
         android:textColor="@color/black"
         android:textSize="20dp" />
 
@@ -40,7 +40,7 @@
         android:id="@+id/btn_easyWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="查看熟词本"
+        android:text="查看已会"
         android:textColor="@color/black"
         android:textSize="20dp" />
 
@@ -48,7 +48,7 @@
         android:id="@+id/tv_changeWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="更改词库"
+        android:text="更改词库或每日计划"
         android:textColor="@color/black"
         android:textSize="20dp" />
 </LinearLayout>
