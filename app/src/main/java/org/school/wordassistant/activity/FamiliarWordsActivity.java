@@ -15,8 +15,6 @@ import java.util.List;
 
 public class FamiliarWordsActivity extends AppCompatActivity {
 
-   
-
     //定义一个适配器
     private EasyHardSlipAdapter adapter;
 
@@ -56,7 +54,7 @@ public class FamiliarWordsActivity extends AppCompatActivity {
                 //从对应的ma[集合中清除掉对应的key-value记录
                 StaticVariablesKeeper.keepEasyWordMap.remove(word.getId());  //根据对应的Key值移除对应的单词
 
-                Log.i("NWRA KEWL size is -->",StaticVariablesKeeper.keepEasyWordList.size()+"");
+//                Log.i("NWRA KEWL size is -->",StaticVariablesKeeper.keepEasyWordList.size()+"");
 
                 //通知adapter更新界面
                 adapter.notifyDataSetChanged();

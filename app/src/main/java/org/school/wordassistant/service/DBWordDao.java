@@ -34,7 +34,7 @@ public class DBWordDao {
     private static DataBaseHelper dataBaseHelper;
 
     //设置的返回的指向不同地址的子集合
-    private static ArrayList<Word> returnListEvtime;
+    private static List<Word> returnListEvtime;
 
 
     //含参数的构造函数
@@ -101,30 +101,25 @@ public class DBWordDao {
      * @param day 第几天（当前天数）
      * **/
     public static List<Word> getEachDayWordsList(int seachNum, int day){
-        //每一次用到该方法时候需要重新设置一个list数组
-        List<Word> eachDayWordsList ;
         //上一天的最后一个单词下标
         int fromNum=(day-1)*seachNum;
 
-        //由allWords得到对应的数据
-        eachDayWordsList = allWords.subList(fromNum,fromNum + seachNum);  //得到对应的截取数组
-
         //初始化一个对应的返回数据数组
-        returnListEvtime = new ArrayList<>();
+        returnListEvtime = allWords.subList(fromNum,fromNum + seachNum);  //得到对应的截取数组
 
-        Log.i("DBWD eachDayWordList size -> ",eachDayWordsList.size()+"");
+        Log.i("DBWD eachDayWordList size -> ",returnListEvtime.size()+"");
 
         //使用Iterator实现数组的新建（原因是使用sublist得到的子数组对应的地址没有变化，也就是说更改eachDayWordsList还是会更改到对应的allWords数组）
-        Iterator iterator = eachDayWordsList.iterator();
-        while(iterator.hasNext()){ //表示iterator对象迭代遍历
-            Word word = (Word) iterator.next();
-
-            if (word.getIsDelCollect()!=2){
-                returnListEvtime.add(word);
-            }else {
-                Log.i("get word isDelCollect --> ",word.getIsDelCollect()+"");
-            }
-        }
+//        Iterator iterator = eachDayWordsList.iterator();
+//        while(iterator.hasNext()){ //表示iterator对象迭代遍历
+//            Word word = (Word) iterator.next();
+//
+//            if (word.getIsDelCollect()!=2){
+//                returnListEvtime.add(word);
+//            }else {
+//                Log.i("get word isDelCollect --> ",word.getIsDelCollect()+"");
+//            }
+//        }
 
         Log.i("DBWD returnArray size -> ",returnListEvtime.size()+"");
 

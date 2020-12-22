@@ -103,7 +103,7 @@ public class EasyHardSlipAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(context, "已删除,请前往熟词本查看", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "已移除,请前往主界面查看", Toast.LENGTH_SHORT).show();
 
                 if (delItemListener != null){  //显示判断监听器接口是不是空的,如果不是的直接调用接口中的删除方法
                     delItemListener.delete(position); // 调用接口的方法，回调删除该项数据(是按照list中的index下标删除数据)

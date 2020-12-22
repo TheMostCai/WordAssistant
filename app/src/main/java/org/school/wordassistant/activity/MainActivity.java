@@ -19,6 +19,7 @@ import android.widget.Toast;
 import org.school.wordassistant.R;
 import org.school.wordassistant.adapter.MainSideSlipAdapter;
 import org.school.wordassistant.entity.Word;
+import org.school.wordassistant.service.AudioService;
 import org.school.wordassistant.service.DBWordDao;
 import org.school.wordassistant.util.StaticVariablesKeeper;
 
@@ -30,8 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
     //定义静态常量UPDATE
     private static final int UPDATE = 666;
+    //定义静态常量audioPlayer
+    private static final int audioPlayer = 888;
+    //创建的pos变量
+    private int currentPosForAudioPlayer;
 
-    //创建的一个handler对象
+   //创建的一个handler对象
     private MyHandler mHandler;
     //定义组件成员变量
     private TextView tv_setting;
@@ -112,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
 
         // 注册监听器,回调用来刷新数据显示(不同的方法实现不同的数据操作,并且实现了对于不同的类实现不同方法的操作)
         adapter.setDelItemListener(new MainSideSlipAdapter.DeleteItem() {
+
+            @Override
+            public void audio(int pos) {
+                //得到对应的position
+                currentPosForAudioPlayer = pos;
+                //放入子线程实现对音乐的播放
+                new Thread(runnable).start();  //开始子线程
+            }
 
             //右滑点击删除时实现的逻辑
             @Override
@@ -205,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
         setListener();
     }
 
-
     //初始化组件方法
     public void initialize(){
 
@@ -223,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
         //设置最开始无法跳转到下一页，当完成按钮被点击后才可以点击
         tv_front.setEnabled(false);
     }
-
 
     //集合很多的设置监听器的方法
     private void setListener(){
@@ -353,6 +364,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    //设置的长按显示出来单词详情方法
     private void showWordDetail(Word toShowWord) {
         final String[] wordItems=new String[4];
         wordItems[0] = toShowWord.getWordString();
@@ -377,6 +390,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //实现的是对于从其他界面返回来的时候实现渲染
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            //得到本页面对应的当前对应的天数和每一天的页数
+            adapter.setList(StaticVariablesKeeper.dbWordDao.getEachDayWordsList(displayNumberSinglePage, currentDay));
+            //通知handler更新数据和UI
+            Message msg = mHandler.obtainMessage(UPDATE);
+            mHandler.sendMessage(msg);
+            //提示用户页面已更新
+            Toast.makeText(MainActivity.this,"页面已更新",Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     //创建的一个handle私有类实现对于监听器中点击下一天按钮之后实现UI界面的更改
     private class MyHandler extends Handler {
         @Override
@@ -391,6 +423,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    //新线程进行网络请求
+    Runnable runnable = new Runnable(){
+        @Override
+        public void run() {
+            Intent intent = new Intent(MainActivity.this, AudioService.class);
+            intent.putExtra("query", eachDayListMA.get(currentPosForAudioPlayer).getWordString());
+            startService(intent);
+            System.out.println("audoService  Start  ----");
+        }
+    };
+
 
 
 }

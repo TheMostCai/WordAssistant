@@ -1,6 +1,7 @@
 package org.school.wordassistant.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import android.widget.Toast;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import org.school.wordassistant.R;
+import org.school.wordassistant.activity.MainActivity;
 import org.school.wordassistant.entity.Word;
+import org.school.wordassistant.service.AudioService;
 
 import java.util.List;
 
@@ -103,7 +106,7 @@ public class MainSideSlipAdapter extends BaseAdapter{
 
             //向listView中的tv_CN组件设置对应的中文解释
             holder.tv_CN.setText("");
-            holder.tv_CN.setHint("已删除");
+            holder.tv_CN.setHint("已放入熟词本");
             holder.tv_CN.setEnabled(false);
 
             //向listView中的组件tv_number设置对应的单词序号
@@ -128,9 +131,24 @@ public class MainSideSlipAdapter extends BaseAdapter{
 
 
         /**
+         * 设置的点击单词发音监听器
+         *
+         * **/
+        holder.content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //调用api接口实现发音
+                if(delItemListener != null){
+                    //表示调用main中实现的接口实现单词发音
+                    delItemListener.audio(position);
+                }
+            }
+        });
+
+
+        /**
          * 收藏按钮的单击事件
          * **/
-
         holder.btn_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +158,7 @@ public class MainSideSlipAdapter extends BaseAdapter{
                 if (delItemListener != null){  //显示判断监听器接口是不是空的,如果不是的直接调用接口中的删除方法
                     delItemListener.collect(position); // 调用接口的方法，回调删除该项数据(是按照list中的index下标删除数据)
                 }
+
                 ((SwipeMenuLayout)(finalCloseView)).quickClose(); //关闭侧滑菜单：需要将itemView强转，然后调用quickClose()方法
             }
         });
@@ -197,13 +216,14 @@ public class MainSideSlipAdapter extends BaseAdapter{
 
     // 定义接口，包含了对于数据操作的方法
     public interface DeleteItem{
+        //点击单词content的时候实现发音
+        void audio(int pos);
         //删除数据的方法
         void delete(int pos);
         //收藏数据的方法
         void collect(int pos);  //表示按照的是每一个页面的对应的数字显示
         //颜色增加的方法
         void addColor(int pos);  //表示的是对单词的重点标识程度(不同的标识程度对应不同的显示颜色)
-
     }
 
 
