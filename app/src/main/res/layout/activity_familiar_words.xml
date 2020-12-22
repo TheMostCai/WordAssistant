@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!--单击activity_setting.xml中的“更改词库”之后跳转到此页面进行对自己的生词的操作-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.FamiliarWordsActivity">
+    android:orientation="vertical"
+    tools:context=".activity.WordChangeActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!--设置显示生词本listView组件-->
+    <ListView
+        android:id="@+id/easyWordList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

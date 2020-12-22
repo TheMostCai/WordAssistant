@@ -144,6 +144,8 @@ public class SetPlanActivity extends AppCompatActivity {
                     bundle.putString("wordType",getType(getSpinnerPosition));
                     bundle.putInt("single_display_number", wordsDisplayDay);
                     bundle.putInt("total_days", finishDaysNumber);
+//                    Log.i("DbWordDao ---->","loadWords --->");
+                    Log.i("SetPlan -------->","btn_set_plane.listenser"+finishDaysNumber+"");
                     toMainActivity.putExtras(bundle);  //放到intent中
 
                     //初始化对应的背诵到的当前天数

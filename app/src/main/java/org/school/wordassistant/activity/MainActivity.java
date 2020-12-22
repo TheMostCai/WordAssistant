@@ -114,14 +114,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void delete(int pos) {
 
-                Log.i("MA delete pos is -->",pos+"");
-
                 //更改对应元素设置为null
                 Word getWord = eachDayListMA.get(pos);//更改元素对应的数据
 
                 //先根据map集合检索是不是已经存在了（这里使用的是单词的id，具有唯一性）
                 if(StaticVariablesKeeper.keepEasyWordMap.containsKey(getWord.getId())){
-                    Toast.makeText(MainActivity.this,"该单词已经在生词本中！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"该单词已经在孰词本中！",Toast.LENGTH_SHORT).show();
                 }else {
                     //不在生词本中实现以后操作
                     getWord.setIsDelCollect(2);
@@ -167,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 Word word = StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords);
 
                 if(StaticVariablesKeeper.keepHardWordList.contains(word.getId())){  //表示包含对应的单词
-                    Toast.makeText(MainActivity.this,"对不起，该单词已经在熟词本中！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"对不起，该单词已经在生词本中！",Toast.LENGTH_SHORT).show();
                 }else {
                     //否则更新收藏元素
                     //更新对应的word的数据

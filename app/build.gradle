@@ -32,3 +32,8 @@ dependencies {
     implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 
 }
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}

@@ -9,7 +9,7 @@
 
     <!--设置显示生词本listView组件-->
     <ListView
-        android:id="@+id/newWordsLv"
+        android:id="@+id/hardWordList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

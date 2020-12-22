@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.ArrayRes;
 
+
 import org.school.wordassistant.entity.Word;
 import org.school.wordassistant.util.DataBaseHelper;
 

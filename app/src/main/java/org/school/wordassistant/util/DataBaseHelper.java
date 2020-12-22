@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import org.school.wordassistant.R;
-import org.school.wordassistant.entity.Word;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
