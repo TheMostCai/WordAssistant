@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,13 +20,13 @@ import android.widget.Toast;
 import org.school.wordassistant.R;
 import org.school.wordassistant.adapter.MainSideSlipAdapter;
 import org.school.wordassistant.entity.Word;
-import org.school.wordassistant.service.AudioService;
 import org.school.wordassistant.service.DBWordDao;
 import org.school.wordassistant.util.StaticVariablesKeeper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
     //定义词库类型
     private String getType = "";
+
+    //创建一个TextToSpeech对象
+     private TextToSpeech tts;
 
 
     @Override
@@ -120,10 +124,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void audio(int pos) {
-                //得到对应的position
-                currentPosForAudioPlayer = pos;
-                //放入子线程实现对音乐的播放
-                new Thread(runnable).start();  //开始子线程
+                int getIndexAllWords = 0;
+                getIndexAllWords = (currentDay-1) * displayNumberSinglePage + pos;
+                //得到当前allWords中对应下标的原来的words
+                Word word = StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords);
+                //执行朗读操作
+                System.out.println("正在执行朗读操作");
+                tts.speak(word.getWordString(), TextToSpeech.QUEUE_ADD, null);
             }
 
             //右滑点击删除时实现的逻辑
@@ -234,15 +241,47 @@ public class MainActivity extends AppCompatActivity {
 
         //设置最开始无法跳转到下一页，当完成按钮被点击后才可以点击
         tv_front.setEnabled(false);
+
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+
+                // 如果装载TTS引擎成功
+                if (status == TextToSpeech.SUCCESS) {
+                    // 设置使用美式英语朗读
+                    int result = tts.setLanguage(Locale.US);
+                    // 如果不支持所设置的语言
+                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE
+                            && result != TextToSpeech.LANG_AVAILABLE) {
+//                        Toast.makeText(Speech.this, "TTS暂时不支持这种语言的朗读。", 50000)
+//                                .show();
+                        System.out.println("TTS暂时不支持这种语言的朗读");
+                    }else{
+                        System.out.println("创建tts成功");
+                    }
+                }else {
+                    System.out.println("tts装载失败！");
+                }
+
+            }
+        });
+
     }
 
     //集合很多的设置监听器的方法
     private void setListener(){
 
+//        lv_words.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//        });
+
+
         lv_words.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int arg2, long arg3) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 // TODO 自动生成的方法存根
                 //根据当前天数以及每页单词个数得到的在allWords集合中的Index
                 int getIndexAllWords = 0;
@@ -250,8 +289,9 @@ public class MainActivity extends AppCompatActivity {
                 //得到当前allWords中对应下标的原来的words
                 Word word = StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords);
                 showWordDetail(word);
+
                 //返回值为true，表示长点击事件后，短点击事件不会触发
-                return true;
+                return false;
             }
         });
 
@@ -424,17 +464,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 关闭TextToSpeech对象
+        if (tts != null)
+        {
+            tts.shutdown();
+        }
+    }
 
     //新线程进行网络请求
-    Runnable runnable = new Runnable(){
-        @Override
-        public void run() {
-            Intent intent = new Intent(MainActivity.this, AudioService.class);
-            intent.putExtra("query", eachDayListMA.get(currentPosForAudioPlayer).getWordString());
-            startService(intent);
-            System.out.println("audoService  Start  ----");
-        }
-    };
+//    Runnable runnable = new Runnable(){
+//        @Override
+//        public void run() {
+//            Intent intent = new Intent(MainActivity.this, AudioService.class);
+//            intent.putExtra("query", eachDayListMA.get(currentPosForAudioPlayer).getWordString());
+//            startService(intent);
+//            System.out.println("audoService  Start  ----");
+//        }
+//    };
 
 
 

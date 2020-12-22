@@ -15,7 +15,6 @@ import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import org.school.wordassistant.R;
 import org.school.wordassistant.activity.MainActivity;
 import org.school.wordassistant.entity.Word;
-import org.school.wordassistant.service.AudioService;
 
 import java.util.List;
 
