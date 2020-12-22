@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 getIndexAllWords = (currentDay-1) * displayNumberSinglePage + pos;
                 //得到当前allWords中对应下标的原来的words
                 Word word = StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords);
-                //执行朗读操作
+                //执行朗读操作（使用tts）
                 System.out.println("正在执行朗读操作");
                 tts.speak(word.getWordString(), TextToSpeech.QUEUE_ADD, null);
             }
@@ -484,8 +484,6 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println("audoService  Start  ----");
 //        }
 //    };
-
-
 
 }
 
