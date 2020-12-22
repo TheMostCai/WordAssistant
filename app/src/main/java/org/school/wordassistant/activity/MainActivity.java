@@ -1,13 +1,16 @@
 package org.school.wordassistant.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -225,6 +228,23 @@ public class MainActivity extends AppCompatActivity {
     //集合很多的设置监听器的方法
     private void setListener(){
 
+        lv_words.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int arg2, long arg3) {
+                // TODO 自动生成的方法存根
+                //根据当前天数以及每页单词个数得到的在allWords集合中的Index
+                int getIndexAllWords = 0;
+                getIndexAllWords = (currentDay-1) * displayNumberSinglePage + arg2;
+                //得到当前allWords中对应下标的原来的words
+                Word word = StaticVariablesKeeper.dbWordDao.allWords.get(getIndexAllWords);
+                showWordDetail(word);
+                //返回值为true，表示长点击事件后，短点击事件不会触发
+                return true;
+            }
+        });
+
+
         //判断完成单词按钮是否点击过
         bu_over.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -331,6 +351,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void showWordDetail(Word toShowWord) {
+        final String[] wordItems=new String[4];
+        wordItems[0] = toShowWord.getWordString();
+        wordItems[1] = "美国发音："+toShowWord.getPhoneticSymbol();
+        wordItems[2] = "汉语意思："+toShowWord.getDescription();
+        wordItems[3] = "例句："+toShowWord.getExampleCentence();
+
+        AlertDialog.Builder listDialog =
+                new AlertDialog.Builder(MainActivity.this);
+        listDialog.setTitle("单词详细信息");
+        listDialog.setItems(wordItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // which 下标从0开始
+                // ...To-do
+//                Toast.makeText(MainActivity.this,
+//                        "你点击了" + wordItems[which],
+//                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        listDialog.show();
     }
 
 
